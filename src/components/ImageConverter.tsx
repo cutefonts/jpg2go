@@ -3,9 +3,11 @@ import {
   Upload, Download, Settings, Trash2, Eye, EyeOff,
   Zap, Sparkles, Image as ImageIcon, FileImage,
   RotateCw, Palette, Sliders, Archive, CheckCircle,
-  AlertCircle, RefreshCw, X, Play, Pause, Monitor
+  AlertCircle, RefreshCw, X, Play, Pause, Monitor,
+  Copy, Send, Link, Share2, QrCode, Mail, MessageSquare
 } from 'lucide-react';
 import JSZip from 'jszip';
+import QRCode from 'qrcode';
 
 interface ImageFile {
   id: string;
@@ -16,6 +18,8 @@ interface ImageFile {
   processedSize?: number;
   status: 'pending' | 'processing' | 'completed' | 'error';
   settings?: ProcessingSettings;
+  downloadLink?: string;
+  shareableLink?: string;
 }
 
 interface ProcessingSettings {
@@ -45,12 +49,327 @@ interface ProcessingSettings {
   watermarkOpacity: number;
 }
 
+interface ShareModalProps {
+  image: ImageFile;
+  onClose: () => void;
+}
+
+const ShareModal: React.FC<ShareModalProps> = ({ image, onClose }) => {
+  const [qrCodeUrl, setQrCodeUrl] = useState<string>('');
+  const [copySuccess, setCopySuccess] = useState<string>('');
+  const [shareMethod, setShareMethod] = useState<'link' | 'qr' | 'email' | 'social'>('link');
+
+  React.useEffect(() => {
+    if (image.processed && shareMethod === 'qr') {
+      generateQRCode();
+    }
+  }, [image.processed, shareMethod]);
+
+  const generateQRCode = async () => {
+    if (!image.processed) return;
+    
+    try {
+      const qrUrl = await QRCode.toDataURL(image.processed, {
+        width: 256,
+        margin: 2,
+        color: {
+          dark: '#7c3aed',
+          light: '#ffffff'
+        }
+      });
+      setQrCodeUrl(qrUrl);
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+    }
+  };
+
+  const copyToClipboard = async (text: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopySuccess(`${type} copied!`);
+      setTimeout(() => setCopySuccess(''), 2000);
+    } catch (error) {
+      console.error('Failed to copy:', error);
+      setCopySuccess('Failed to copy');
+      setTimeout(() => setCopySuccess(''), 2000);
+    }
+  };
+
+  const shareViaEmail = () => {
+    const subject = encodeURIComponent('Converted Image from JPG2GO');
+    const body = encodeURIComponent(
+      `Hi!\n\nI've converted an image using JPG2GO and wanted to share it with you.\n\nDownload link: ${image.processed}\n\nJPG2GO is a free, privacy-focused image converter that processes everything locally in your browser.\n\nCheck it out at: https://jpg2go.com\n\nBest regards!`
+    );
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+  };
+
+  const shareViaSocial = (platform: string) => {
+    const text = encodeURIComponent('Check out this image I converted with JPG2GO - a free, privacy-focused image converter!');
+    const url = encodeURIComponent(window.location.origin);
+    
+    const urls = {
+      twitter: `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
+      whatsapp: `https://wa.me/?text=${text}%20${url}`
+    };
+    
+    window.open(urls[platform as keyof typeof urls], '_blank', 'width=600,height=400');
+  };
+
+  const downloadQRCode = () => {
+    if (!qrCodeUrl) return;
+    
+    const link = document.createElement('a');
+    link.href = qrCodeUrl;
+    link.download = `qr-code-${image.file.name}.png`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" role="dialog" aria-modal="true">
+      <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+          <h3 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+            <Share2 className="h-5 w-5 text-violet-600" />
+            <span>Share & Send</span>
+          </h3>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            aria-label="Close share modal"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+        
+        <div className="p-6">
+          {/* Share Method Tabs */}
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1 mb-6">
+            {[
+              { id: 'link', label: 'Copy Link', icon: <Link className="h-4 w-4" /> },
+              { id: 'qr', label: 'QR Code', icon: <QrCode className="h-4 w-4" /> },
+              { id: 'email', label: 'Email', icon: <Mail className="h-4 w-4" /> },
+              { id: 'social', label: 'Social', icon: <MessageSquare className="h-4 w-4" /> }
+            ].map((method) => (
+              <button
+                key={method.id}
+                onClick={() => setShareMethod(method.id as any)}
+                className={`flex-1 flex items-center justify-center space-x-2 py-2 px-3 rounded-md text-sm font-medium transition-colors ${
+                  shareMethod === method.id
+                    ? 'bg-white text-violet-600 shadow-sm'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {method.icon}
+                <span>{method.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Content based on selected method */}
+          {shareMethod === 'link' && (
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Direct Download Link
+                </label>
+                <div className="flex space-x-2">
+                  <input
+                    type="text"
+                    value={image.processed || ''}
+                    readOnly
+                    className="flex-1 p-3 border border-gray-300 rounded-lg bg-gray-50 text-sm"
+                  />
+                  <button
+                    onClick={() => copyToClipboard(image.processed || '', 'Download link')}
+                    className="px-4 py-3 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Shareable Message
+                </label>
+                <div className="flex space-x-2">
+                  <textarea
+                    value={`Check out this image I converted with JPG2GO!\n\nDownload: ${image.processed}\n\nJPG2GO is a free, privacy-focused image converter: ${window.location.origin}`}
+                    readOnly
+                    rows={4}
+                    className="flex-1 p-3 border border-gray-300 rounded-lg bg-gray-50 text-sm resize-none"
+                  />
+                  <button
+                    onClick={() => copyToClipboard(
+                      `Check out this image I converted with JPG2GO!\n\nDownload: ${image.processed}\n\nJPG2GO is a free, privacy-focused image converter: ${window.location.origin}`,
+                      'Message'
+                    )}
+                    className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                  >
+                    <Copy className="h-4 w-4" />
+                    <span>Copy</span>
+                  </button>
+                </div>
+              </div>
+
+              {copySuccess && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-green-600" />
+                    <span className="text-green-800 text-sm font-medium">{copySuccess}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {shareMethod === 'qr' && (
+            <div className="text-center space-y-4">
+              <p className="text-gray-600">
+                Scan this QR code to download the converted image
+              </p>
+              
+              {qrCodeUrl ? (
+                <div className="inline-block p-4 bg-white border-2 border-gray-200 rounded-xl">
+                  <img
+                    src={qrCodeUrl}
+                    alt="QR Code for download link"
+                    className="w-48 h-48 mx-auto"
+                  />
+                </div>
+              ) : (
+                <div className="w-48 h-48 mx-auto bg-gray-100 rounded-xl flex items-center justify-center">
+                  <RefreshCw className="h-8 w-8 text-gray-400 animate-spin" />
+                </div>
+              )}
+
+              <div className="flex justify-center space-x-3">
+                <button
+                  onClick={() => copyToClipboard(image.processed || '', 'Download link')}
+                  className="px-4 py-2 bg-violet-600 text-white rounded-lg hover:bg-violet-700 transition-colors flex items-center space-x-2"
+                >
+                  <Copy className="h-4 w-4" />
+                  <span>Copy Link</span>
+                </button>
+                <button
+                  onClick={downloadQRCode}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Save QR</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {shareMethod === 'email' && (
+            <div className="space-y-4">
+              <p className="text-gray-600 text-center">
+                Send the converted image via email
+              </p>
+              
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h4 className="font-medium text-gray-900 mb-2">Email Preview:</h4>
+                <div className="text-sm text-gray-600 space-y-2">
+                  <p><strong>Subject:</strong> Converted Image from JPG2GO</p>
+                  <div>
+                    <strong>Body:</strong>
+                    <div className="mt-1 p-3 bg-white rounded border text-xs">
+                      Hi!<br/><br/>
+                      I've converted an image using JPG2GO and wanted to share it with you.<br/><br/>
+                      Download link: {image.processed}<br/><br/>
+                      JPG2GO is a free, privacy-focused image converter that processes everything locally in your browser.<br/><br/>
+                      Check it out at: {window.location.origin}<br/><br/>
+                      Best regards!
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={shareViaEmail}
+                className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
+              >
+                <Mail className="h-5 w-5" />
+                <span>Open Email Client</span>
+              </button>
+            </div>
+          )}
+
+          {shareMethod === 'social' && (
+            <div className="space-y-4">
+              <p className="text-gray-600 text-center">
+                Share JPG2GO on social media
+              </p>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => shareViaSocial('twitter')}
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3"
+                >
+                  <div className="w-8 h-8 bg-blue-400 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">T</span>
+                  </div>
+                  <span className="font-medium">Twitter</span>
+                </button>
+
+                <button
+                  onClick={() => shareViaSocial('facebook')}
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3"
+                >
+                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">f</span>
+                  </div>
+                  <span className="font-medium">Facebook</span>
+                </button>
+
+                <button
+                  onClick={() => shareViaSocial('linkedin')}
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3"
+                >
+                  <div className="w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">in</span>
+                  </div>
+                  <span className="font-medium">LinkedIn</span>
+                </button>
+
+                <button
+                  onClick={() => shareViaSocial('whatsapp')}
+                  className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3"
+                >
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-sm font-bold">W</span>
+                  </div>
+                  <span className="font-medium">WhatsApp</span>
+                </button>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                <p className="text-blue-800 text-sm">
+                  <strong>Note:</strong> Social sharing promotes JPG2GO, not the specific converted image. 
+                  Use the "Copy Link" or "Email" options to share the actual download link.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ImageConverter: React.FC = () => {
   const [images, setImages] = useState<ImageFile[]>([]);
   const [dragActive, setDragActive] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState<'basic' | 'filters' | 'transform' | 'advanced'>('basic');
   const [showPreview, setShowPreview] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState<string | null>(null);
   const [globalSettings, setGlobalSettings] = useState<ProcessingSettings>({
     format: 'jpeg',
     quality: 85,
@@ -150,6 +469,7 @@ const ImageConverter: React.FC = () => {
     
     // Close any open preview
     setShowPreview(null);
+    setShowShareModal(null);
     
     // Reset processing state
     setIsProcessing(false);
@@ -366,7 +686,9 @@ const ImageConverter: React.FC = () => {
               status: 'completed' as const, 
               processed: processedUrl,
               processedSize: blob.size,
-              settings: { ...globalSettings }
+              settings: { ...globalSettings },
+              downloadLink: processedUrl,
+              shareableLink: processedUrl
             } 
           : img
       ));
@@ -443,6 +765,27 @@ const ImageConverter: React.FC = () => {
     }
   };
 
+  const copyDownloadLink = async (id: string) => {
+    const image = images.find(img => img.id === id);
+    if (!image || !image.processed) return;
+
+    try {
+      await navigator.clipboard.writeText(image.processed);
+      // Show temporary success message
+      const button = document.querySelector(`[data-copy-id="${id}"]`);
+      if (button) {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        setTimeout(() => {
+          button.textContent = originalText;
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Failed to copy link:', error);
+      alert('Failed to copy link to clipboard');
+    }
+  };
+
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
@@ -484,7 +827,7 @@ const ImageConverter: React.FC = () => {
             <span>AI-Powered Converter</span>
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-gray-900 via-violet-900 to-blue-900 bg-clip-text text-transparent mb-4 sm:mb-6 px-4">
-            Ai Image Converter          </h1>
+            AI Image Converter          </h1>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
             Convert JPEG to PNG, PNG to JPG, WebP, AVIF, HEIC and 15+ formats instantly. 
             AI-powered optimization with advanced filters, batch processing, and 100% privacy protection.
@@ -1011,41 +1354,68 @@ const ImageConverter: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="flex space-x-2">
-                    {image.status === 'pending' || image.status === 'error' ? (
+                  <div className="space-y-2">
+                    {/* Main Action Buttons */}
+                    <div className="flex space-x-2">
+                      {image.status === 'pending' || image.status === 'error' ? (
+                        <button
+                          onClick={() => convertSingle(image.id)}
+                          disabled={isProcessing}
+                          className="flex-1 bg-violet-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors disabled:opacity-50 flex items-center justify-center space-x-1"
+                          aria-label={`Convert ${image.file.name}`}
+                        >
+                          <Zap className="h-3 w-3" />
+                          <span>Convert</span>
+                        </button>
+                      ) : image.status === 'completed' ? (
+                        <button
+                          onClick={() => downloadSingle(image.id)}
+                          className="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-1"
+                          aria-label={`Download converted ${image.file.name}`}
+                        >
+                          <Download className="h-3 w-3" />
+                          <span>Download</span>
+                        </button>
+                      ) : (
+                        <div className="flex-1 bg-gray-200 text-gray-500 px-3 py-2 rounded-lg text-sm font-medium text-center flex items-center justify-center space-x-1">
+                          <RefreshCw className="h-3 w-3 animate-spin" />
+                          <span>Processing...</span>
+                        </div>
+                      )}
+                      
                       <button
-                        onClick={() => convertSingle(image.id)}
-                        disabled={isProcessing}
-                        className="flex-1 bg-violet-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-violet-700 transition-colors disabled:opacity-50 flex items-center justify-center space-x-1"
-                        aria-label={`Convert ${image.file.name}`}
+                        onClick={() => removeImage(image.id)}
+                        className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                        title="Remove image"
+                        aria-label={`Remove ${image.file.name}`}
                       >
-                        <Zap className="h-3 w-3" />
-                        <span>Convert</span>
+                        <Trash2 className="h-4 w-4" />
                       </button>
-                    ) : image.status === 'completed' ? (
-                      <button
-                        onClick={() => downloadSingle(image.id)}
-                        className="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-1"
-                        aria-label={`Download converted ${image.file.name}`}
-                      >
-                        <Download className="h-3 w-3" />
-                        <span>Download</span>
-                      </button>
-                    ) : (
-                      <div className="flex-1 bg-gray-200 text-gray-500 px-3 py-2 rounded-lg text-sm font-medium text-center flex items-center justify-center space-x-1">
-                        <RefreshCw className="h-3 w-3 animate-spin" />
-                        <span>Processing...</span>
+                    </div>
+
+                    {/* Copy & Share Buttons */}
+                    {image.status === 'completed' && image.processed && (
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => copyDownloadLink(image.id)}
+                          data-copy-id={image.id}
+                          className="flex-1 bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-1"
+                          aria-label={`Copy download link for ${image.file.name}`}
+                        >
+                          <Copy className="h-3 w-3" />
+                          <span>Copy Link</span>
+                        </button>
+                        
+                        <button
+                          onClick={() => setShowShareModal(image.id)}
+                          className="flex-1 bg-purple-600 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors flex items-center justify-center space-x-1"
+                          aria-label={`Share ${image.file.name}`}
+                        >
+                          <Send className="h-3 w-3" />
+                          <span>Share</span>
+                        </button>
                       </div>
                     )}
-                    
-                    <button
-                      onClick={() => removeImage(image.id)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                      title="Remove image"
-                      aria-label={`Remove ${image.file.name}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
                   </div>
                 </div>
               </div>
@@ -1140,6 +1510,17 @@ const ImageConverter: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* Share Modal */}
+        {showShareModal && (() => {
+          const image = images.find(img => img.id === showShareModal);
+          return image ? (
+            <ShareModal
+              image={image}
+              onClose={() => setShowShareModal(null)}
+            />
+          ) : null;
+        })()}
 
         {/* Hidden Canvas */}
         <canvas ref={canvasRef} className="hidden" aria-hidden="true" />
