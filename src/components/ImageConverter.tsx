@@ -352,7 +352,7 @@ const ShareModal: React.FC<ShareModalProps> = ({ image, onClose }) => {
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <p className="text-blue-800 text-sm">
                   <strong>Note:</strong> Social sharing promotes JPG2GO, not the specific converted image. 
-                  Use the "Copy Link" or "Email" options to share the actual download link.
+                  Use the "Copy Link\" or "Email\" options to share the actual download link.
                 </p>
               </div>
             </div>
