@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { 
   Brain, Target, Scissors, BarChart3, Layers, Wand2,
   Sparkles, ArrowRight, Star, TrendingUp, Award,
-  Zap, Eye, Settings, Download, Upload, Play
+  Zap, Eye, Settings, Download, Upload, Play,
+  Palette, RotateCw, Maximize2, Minimize2, Grid3X3,
+  Crop, Filter, Contrast, Sun, Moon, Droplets,
+  Paintbrush, Eraser, Move, Copy, Shuffle, Sliders,
+  Image as ImageIcon, FileImage, Camera, Video,
+  Layers3, Blend, Focus, Aperture, Lightbulb
 } from 'lucide-react';
 import AIEnhancer from './AIEnhancer';
 import SmartCrop from './SmartCrop';
@@ -20,7 +25,8 @@ const AdvancedToolsHub: React.FC = () => {
       gradient: 'from-purple-500 via-violet-500 to-indigo-500',
       features: ['Super-resolution up to 4x', 'Intelligent noise reduction', 'Smart sharpening', 'Color optimization'],
       badge: 'AI Powered',
-      component: AIEnhancer
+      component: AIEnhancer,
+      category: 'AI Tools'
     },
     {
       id: 'smart-crop',
@@ -30,7 +36,8 @@ const AdvancedToolsHub: React.FC = () => {
       gradient: 'from-emerald-500 via-teal-500 to-cyan-500',
       features: ['Face & object detection', 'Rule of thirds analysis', 'Social media formats', 'Confidence scoring'],
       badge: 'Smart AI',
-      component: SmartCrop
+      component: SmartCrop,
+      category: 'AI Tools'
     },
     {
       id: 'background-remover',
@@ -40,20 +47,203 @@ const AdvancedToolsHub: React.FC = () => {
       gradient: 'from-pink-500 via-rose-500 to-red-500',
       features: ['AI background detection', 'Edge smoothing', 'Color replacement', 'Transparent output'],
       badge: 'Pro Tool',
-      component: BackgroundRemover
+      component: BackgroundRemover,
+      category: 'AI Tools'
+    },
+    {
+      id: 'batch-processor',
+      name: 'Batch Processor',
+      description: 'Process hundreds of images simultaneously with consistent settings and quality',
+      icon: <Layers className="h-8 w-8" />,
+      gradient: 'from-blue-500 via-indigo-500 to-purple-500',
+      features: ['Process up to 1000 images', 'Consistent quality settings', 'Progress tracking', 'ZIP download'],
+      badge: 'High Volume',
+      component: null,
+      category: 'Productivity'
+    },
+    {
+      id: 'image-analyzer',
+      name: 'Image Analyzer',
+      description: 'Comprehensive analysis including color palettes, quality metrics, and optimization tips',
+      icon: <BarChart3 className="h-8 w-8" />,
+      gradient: 'from-orange-500 via-amber-500 to-yellow-500',
+      features: ['Color palette extraction', 'Quality metrics', 'Metadata analysis', 'Optimization suggestions'],
+      badge: 'Deep Insights',
+      component: null,
+      category: 'Analysis'
+    },
+    {
+      id: 'format-converter',
+      name: 'Format Converter',
+      description: 'Convert between 15+ image formats with advanced compression and quality controls',
+      icon: <FileImage className="h-8 w-8" />,
+      gradient: 'from-green-500 via-emerald-500 to-teal-500',
+      features: ['15+ format support', 'Smart compression', 'Quality presets', 'Lossless options'],
+      badge: 'Universal',
+      component: null,
+      category: 'Conversion'
+    },
+    {
+      id: 'image-resizer',
+      name: 'Smart Resizer',
+      description: 'Intelligent image resizing with aspect ratio preservation and quality optimization',
+      icon: <Maximize2 className="h-8 w-8" />,
+      gradient: 'from-cyan-500 via-blue-500 to-indigo-500',
+      features: ['Smart scaling algorithms', 'Aspect ratio lock', 'Batch resizing', 'Custom dimensions'],
+      badge: 'Precision',
+      component: null,
+      category: 'Transform'
+    },
+    {
+      id: 'color-adjuster',
+      name: 'Color Adjuster',
+      description: 'Professional color correction with HSL controls, curves, and color grading',
+      icon: <Palette className="h-8 w-8" />,
+      gradient: 'from-pink-500 via-purple-500 to-violet-500',
+      features: ['HSL adjustments', 'Color curves', 'White balance', 'Selective color editing'],
+      badge: 'Pro Color',
+      component: null,
+      category: 'Color'
+    },
+    {
+      id: 'filter-studio',
+      name: 'Filter Studio',
+      description: 'Apply professional filters and effects with real-time preview and custom presets',
+      icon: <Filter className="h-8 w-8" />,
+      gradient: 'from-red-500 via-pink-500 to-purple-500',
+      features: ['50+ professional filters', 'Custom presets', 'Real-time preview', 'Blend modes'],
+      badge: 'Creative',
+      component: null,
+      category: 'Effects'
+    },
+    {
+      id: 'watermark-tool',
+      name: 'Watermark Tool',
+      description: 'Add text or image watermarks with advanced positioning and transparency controls',
+      icon: <Paintbrush className="h-8 w-8" />,
+      gradient: 'from-indigo-500 via-purple-500 to-pink-500',
+      features: ['Text & image watermarks', 'Position controls', 'Transparency settings', 'Batch watermarking'],
+      badge: 'Protection',
+      component: null,
+      category: 'Branding'
+    },
+    {
+      id: 'noise-reducer',
+      name: 'Noise Reducer',
+      description: 'Advanced noise reduction using AI algorithms to clean up grainy or low-light images',
+      icon: <Droplets className="h-8 w-8" />,
+      gradient: 'from-teal-500 via-cyan-500 to-blue-500',
+      features: ['AI noise detection', 'Luminance & color noise', 'Detail preservation', 'Batch processing'],
+      badge: 'AI Clean',
+      component: null,
+      category: 'Enhancement'
+    },
+    {
+      id: 'sharpening-tool',
+      name: 'Sharpening Tool',
+      description: 'Intelligent sharpening with edge detection to enhance details without artifacts',
+      icon: <Focus className="h-8 w-8" />,
+      gradient: 'from-emerald-500 via-green-500 to-teal-500',
+      features: ['Edge-aware sharpening', 'Unsharp mask', 'Smart radius detection', 'Preview comparison'],
+      badge: 'Sharp',
+      component: null,
+      category: 'Enhancement'
+    },
+    {
+      id: 'exposure-corrector',
+      name: 'Exposure Corrector',
+      description: 'Fix overexposed or underexposed images with intelligent tone mapping',
+      icon: <Sun className="h-8 w-8" />,
+      gradient: 'from-yellow-500 via-orange-500 to-red-500',
+      features: ['Auto exposure correction', 'Highlight recovery', 'Shadow lifting', 'HDR tone mapping'],
+      badge: 'Auto Fix',
+      component: null,
+      category: 'Correction'
+    },
+    {
+      id: 'perspective-corrector',
+      name: 'Perspective Corrector',
+      description: 'Correct perspective distortion and keystone effects in architectural photos',
+      icon: <Grid3X3 className="h-8 w-8" />,
+      gradient: 'from-slate-500 via-gray-500 to-zinc-500',
+      features: ['Keystone correction', 'Perspective guides', 'Auto detection', 'Manual adjustment'],
+      badge: 'Geometry',
+      component: null,
+      category: 'Correction'
+    },
+    {
+      id: 'vintage-effects',
+      name: 'Vintage Effects',
+      description: 'Create authentic vintage looks with film emulation and retro color grading',
+      icon: <Camera className="h-8 w-8" />,
+      gradient: 'from-amber-500 via-yellow-500 to-orange-500',
+      features: ['Film emulation', 'Vintage color grading', 'Grain effects', 'Light leaks'],
+      badge: 'Retro',
+      component: null,
+      category: 'Effects'
+    },
+    {
+      id: 'collage-maker',
+      name: 'Collage Maker',
+      description: 'Create stunning photo collages with customizable layouts and spacing',
+      icon: <Grid3X3 className="h-8 w-8" />,
+      gradient: 'from-violet-500 via-purple-500 to-indigo-500',
+      features: ['Multiple layouts', 'Custom spacing', 'Background options', 'Auto arrangement'],
+      badge: 'Creative',
+      component: null,
+      category: 'Composition'
+    },
+    {
+      id: 'border-tool',
+      name: 'Border & Frame Tool',
+      description: 'Add professional borders, frames, and edge effects to your images',
+      icon: <Copy className="h-8 w-8" />,
+      gradient: 'from-rose-500 via-pink-500 to-purple-500',
+      features: ['Custom borders', 'Frame styles', 'Shadow effects', 'Rounded corners'],
+      badge: 'Styling',
+      component: null,
+      category: 'Styling'
+    },
+    {
+      id: 'metadata-editor',
+      name: 'Metadata Editor',
+      description: 'View, edit, and remove EXIF data and other metadata from your images',
+      icon: <FileImage className="h-8 w-8" />,
+      gradient: 'from-gray-500 via-slate-500 to-zinc-500',
+      features: ['EXIF data editing', 'GPS removal', 'Copyright info', 'Batch metadata'],
+      badge: 'Privacy',
+      component: null,
+      category: 'Utility'
     }
   ];
+
+  const categories = [
+    { id: 'all', name: 'All Tools', icon: <Layers3 className="h-4 w-4" /> },
+    { id: 'AI Tools', name: 'AI Tools', icon: <Brain className="h-4 w-4" /> },
+    { id: 'Enhancement', name: 'Enhancement', icon: <Wand2 className="h-4 w-4" /> },
+    { id: 'Transform', name: 'Transform', icon: <RotateCw className="h-4 w-4" /> },
+    { id: 'Color', name: 'Color', icon: <Palette className="h-4 w-4" /> },
+    { id: 'Effects', name: 'Effects', icon: <Filter className="h-4 w-4" /> },
+    { id: 'Correction', name: 'Correction', icon: <Sliders className="h-4 w-4" /> },
+    { id: 'Utility', name: 'Utility', icon: <Settings className="h-4 w-4" /> }
+  ];
+
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  const filteredTools = selectedCategory === 'all' 
+    ? tools 
+    : tools.filter(tool => tool.category === selectedCategory);
 
   const stats = [
     { icon: <TrendingUp className="h-5 w-5" />, value: "98%", label: "Accuracy Rate" },
     { icon: <Zap className="h-5 w-5" />, value: "< 2s", label: "Processing Time" },
-    { icon: <Award className="h-5 w-5" />, value: "15+", label: "AI Models" },
+    { icon: <Award className="h-5 w-5" />, value: "18", label: "AI Tools" },
     { icon: <Star className="h-5 w-5" />, value: "4.9/5", label: "User Rating" }
   ];
 
   if (activeTool) {
     const tool = tools.find(t => t.id === activeTool);
-    if (tool) {
+    if (tool && tool.component) {
       const ToolComponent = tool.component;
       return (
         <section className="py-16 sm:py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50">
@@ -98,8 +288,8 @@ const AdvancedToolsHub: React.FC = () => {
           </h2>
           
           <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Unlock the full potential of your images with our advanced AI-powered tools. 
-            From intelligent enhancement to smart cropping, everything you need for professional results.
+            Unlock the full potential of your images with our comprehensive collection of AI-powered tools. 
+            From intelligent enhancement to creative effects, everything you need for professional results.
           </p>
         </div>
 
@@ -122,13 +312,31 @@ const AdvancedToolsHub: React.FC = () => {
           ))}
         </div>
 
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.id)}
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 ${
+                selectedCategory === category.id
+                  ? 'bg-gradient-to-r from-violet-600 to-blue-600 text-white shadow-lg'
+                  : 'bg-white/80 text-gray-700 hover:bg-white hover:shadow-md border border-gray-200'
+              }`}
+            >
+              {category.icon}
+              <span>{category.name}</span>
+            </button>
+          ))}
+        </div>
+
         {/* Tools Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
-          {tools.map((tool) => (
+          {filteredTools.map((tool) => (
             <div
               key={tool.id}
               className="group relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/20 overflow-hidden transform hover:-translate-y-2 cursor-pointer"
-              onClick={() => setActiveTool(tool.id)}
+              onClick={() => tool.component ? setActiveTool(tool.id) : null}
             >
               {/* Animated Background Gradient */}
               <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
@@ -139,6 +347,15 @@ const AdvancedToolsHub: React.FC = () => {
                   {tool.badge}
                 </span>
               </div>
+
+              {/* Coming Soon Overlay for tools without components */}
+              {!tool.component && (
+                <div className="absolute top-4 left-4 z-10">
+                  <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg">
+                    Coming Soon
+                  </span>
+                </div>
+              )}
 
               {/* Content */}
               <div className="relative p-8">
@@ -171,13 +388,22 @@ const AdvancedToolsHub: React.FC = () => {
 
                 {/* Action Button */}
                 <button
-                  className={`w-full bg-gradient-to-r ${tool.gradient} text-white px-6 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 group-hover:scale-105 relative overflow-hidden`}
+                  className={`w-full bg-gradient-to-r ${tool.gradient} text-white px-6 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 group-hover:scale-105 relative overflow-hidden ${
+                    !tool.component ? 'opacity-75 cursor-not-allowed' : ''
+                  }`}
+                  disabled={!tool.component}
                 >
-                  <span className="relative z-10">Try {tool.name}</span>
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform relative z-10" />
+                  <span className="relative z-10">
+                    {tool.component ? `Try ${tool.name}` : 'Coming Soon'}
+                  </span>
+                  {tool.component && (
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform relative z-10" />
+                  )}
                   
                   {/* Button shine effect */}
-                  <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  {tool.component && (
+                    <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                  )}
                 </button>
               </div>
 
@@ -186,6 +412,50 @@ const AdvancedToolsHub: React.FC = () => {
               <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-white/10 to-transparent rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700" />
             </div>
           ))}
+        </div>
+
+        {/* Feature Highlight */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 mb-16">
+          <div className="text-center mb-8">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Our Advanced Tools?</h3>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Our comprehensive suite of AI-powered tools provides everything you need for professional image processing
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Brain className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">AI-Powered</h4>
+              <p className="text-sm text-gray-600">Advanced machine learning algorithms for intelligent processing</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Zap className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">Lightning Fast</h4>
+              <p className="text-sm text-gray-600">GPU acceleration and optimized algorithms for rapid processing</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Eye className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">Real-time Preview</h4>
+              <p className="text-sm text-gray-600">See changes instantly with live preview and comparison tools</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Layers className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">Batch Processing</h4>
+              <p className="text-sm text-gray-600">Process multiple images simultaneously for maximum efficiency</p>
+            </div>
+          </div>
         </div>
 
         {/* CTA Section */}
