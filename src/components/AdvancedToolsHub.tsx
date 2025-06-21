@@ -1,20 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Brain, Target, Scissors, BarChart3, Layers, Wand2,
-  Sparkles, ArrowRight, Star, TrendingUp, Award,
-  Zap, Eye, Settings, Download, Upload, Play,
-  Palette, RotateCw, Maximize2, Minimize2, Grid3X3,
-  Crop, Filter, Contrast, Sun, Moon, Droplets,
-  Paintbrush, Eraser, Move, Copy, Shuffle, Sliders,
-  Image as ImageIcon, FileImage, Camera, Video,
-  Layers3, Blend, Focus, Aperture, Lightbulb,
-  FileText, FilePlus, FileX, Merge, Split, Lock,
-  Unlock, Compress, Archive, ScanLine, Type,
-  Combine, Divide, Shield, Key, Search, Replace,
-  RotateCcw, FlipHorizontal, FlipVertical, Crop as CropIcon,
-  Transparency, Contrast2, Brightness, Saturation,
-  Gamma, Histogram, ColorPicker, Eyedropper
-} from 'lucide-react';
+import { Brain, Target, Scissors, BarChart3, Layers, Wand2, Sparkles, ArrowRight, Star, TrendingUp, Award, Zap, Eye, Settings, Download, Upload, Play, Palette, RotateCw, Maximize2, Minimize2, Grid3X3, Crop, Filter, Contrast, Sun, Moon, Droplets, Paintbrush, Eraser, Move, Copy, Shuffle, Sliders, Image as ImageIcon, FileImage, Camera, Video, Layers3, Blend, Focus, Aperture, Lightbulb, FileText, FilePlus, FileX, Merge, Split, Lock, Unlock, Compass as Compress, Archive, ScanLine, Type, Combine, Divide, Shield, Key, Search, Replace, RotateCcw, FlipHorizontal, FlipVertical, Crop as CropIcon, Currency as Transparency, Contrast as Contrast2, Copyright as Brightness, IterationCw as Saturation, Drama as Gamma, History as Histogram, Sticker as ColorPicker, PartyPopper as Eyedropper } from 'lucide-react';
 import AIEnhancer from './AIEnhancer';
 import SmartCrop from './SmartCrop';
 import BackgroundRemover from './BackgroundRemover';
