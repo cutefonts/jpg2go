@@ -18,7 +18,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Super-resolution up to 4x', 'Intelligent noise reduction', 'Smart sharpening', 'Color optimization'],
       badge: 'AI Powered',
       component: AIEnhancer,
-      category: 'AI Tools'
+      category: 'AI Tools',
+      isActive: true
     },
     {
       id: 'smart-crop',
@@ -29,7 +30,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Face & object detection', 'Rule of thirds analysis', 'Social media formats', 'Confidence scoring'],
       badge: 'Smart AI',
       component: SmartCrop,
-      category: 'AI Tools'
+      category: 'AI Tools',
+      isActive: true
     },
     {
       id: 'background-remover',
@@ -40,7 +42,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['AI background detection', 'Edge smoothing', 'Color replacement', 'Transparent output'],
       badge: 'Pro Tool',
       component: BackgroundRemover,
-      category: 'AI Tools'
+      category: 'AI Tools',
+      isActive: true
     },
 
     // PDF Tools
@@ -53,7 +56,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['High-resolution output', 'Custom DPI settings', 'Batch page conversion', 'Quality optimization'],
       badge: 'PDF Pro',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-to-png',
@@ -64,7 +68,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Transparency preservation', 'Lossless conversion', 'Vector graphics support', 'Text clarity'],
       badge: 'Lossless',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'jpg-to-pdf',
@@ -75,7 +80,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Multi-image PDF creation', 'Custom page layouts', 'Compression options', 'Metadata support'],
       badge: 'Creator',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'png-to-pdf',
@@ -86,7 +92,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Transparency handling', 'Quality preservation', 'Batch conversion', 'Custom sizing'],
       badge: 'Quality',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-merger',
@@ -97,7 +104,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Drag & drop ordering', 'Page range selection', 'Bookmark preservation', 'Metadata merging'],
       badge: 'Combine',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-splitter',
@@ -108,7 +116,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Page range splitting', 'Individual page extraction', 'Batch processing', 'Custom naming'],
       badge: 'Divide',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-compressor',
@@ -119,7 +128,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Smart compression', 'Quality presets', 'Size optimization', 'Batch compression'],
       badge: 'Optimize',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-protector',
@@ -130,7 +140,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Password encryption', 'Permission controls', 'Digital signatures', 'Security levels'],
       badge: 'Secure',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
     {
       id: 'pdf-unlocker',
@@ -141,7 +152,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Password removal', 'Permission unlocking', 'Batch processing', 'Security validation'],
       badge: 'Unlock',
       component: null,
-      category: 'PDF Tools'
+      category: 'PDF Tools',
+      isActive: false
     },
 
     // JPG Specific Tools
@@ -154,7 +166,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Progressive JPEG', 'Quality analysis', 'Huffman optimization', 'Chroma subsampling'],
       badge: 'Optimize',
       component: null,
-      category: 'JPG Tools'
+      category: 'JPG Tools',
+      isActive: false
     },
     {
       id: 'jpg-metadata-editor',
@@ -165,7 +178,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['EXIF data editing', 'GPS removal', 'Copyright info', 'Batch metadata'],
       badge: 'Privacy',
       component: null,
-      category: 'JPG Tools'
+      category: 'JPG Tools',
+      isActive: false
     },
     {
       id: 'jpg-quality-analyzer',
@@ -176,7 +190,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Quality scoring', 'Artifact detection', 'Compression analysis', 'Optimization tips'],
       badge: 'Analysis',
       component: null,
-      category: 'JPG Tools'
+      category: 'JPG Tools',
+      isActive: false
     },
     {
       id: 'jpg-progressive-converter',
@@ -187,7 +202,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Progressive encoding', 'Web optimization', 'Loading preview', 'Batch conversion'],
       badge: 'Web Ready',
       component: null,
-      category: 'JPG Tools'
+      category: 'JPG Tools',
+      isActive: false
     },
 
     // PNG Specific Tools
@@ -200,7 +216,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Lossless compression', 'Palette optimization', 'Transparency preservation', 'Chunk optimization'],
       badge: 'Lossless',
       component: null,
-      category: 'PNG Tools'
+      category: 'PNG Tools',
+      isActive: false
     },
     {
       id: 'png-transparency-editor',
@@ -211,7 +228,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Alpha channel editing', 'Color to transparency', 'Transparency masks', 'Edge smoothing'],
       badge: 'Alpha Pro',
       component: null,
-      category: 'PNG Tools'
+      category: 'PNG Tools',
+      isActive: false
     },
     {
       id: 'png-to-jpg-converter',
@@ -222,7 +240,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Background color selection', 'Quality control', 'Transparency handling', 'Batch conversion'],
       badge: 'Convert',
       component: null,
-      category: 'PNG Tools'
+      category: 'PNG Tools',
+      isActive: false
     },
     {
       id: 'png-sprite-generator',
@@ -233,7 +252,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Sprite sheet creation', 'CSS generation', 'Optimization', 'Custom layouts'],
       badge: 'Web Dev',
       component: null,
-      category: 'PNG Tools'
+      category: 'PNG Tools',
+      isActive: false
     },
 
     // Enhanced Image Tools
@@ -246,7 +266,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Process up to 1000 images', 'Consistent quality settings', 'Progress tracking', 'ZIP download'],
       badge: 'High Volume',
       component: null,
-      category: 'Productivity'
+      category: 'Productivity',
+      isActive: false
     },
     {
       id: 'image-analyzer',
@@ -257,7 +278,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Color palette extraction', 'Quality metrics', 'Metadata analysis', 'Optimization suggestions'],
       badge: 'Deep Insights',
       component: null,
-      category: 'Analysis'
+      category: 'Analysis',
+      isActive: false
     },
     {
       id: 'format-converter',
@@ -268,7 +290,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['20+ format support', 'Smart compression', 'Quality presets', 'Lossless options'],
       badge: 'Universal',
       component: null,
-      category: 'Conversion'
+      category: 'Conversion',
+      isActive: false
     },
     {
       id: 'image-resizer',
@@ -279,7 +302,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Smart scaling algorithms', 'Aspect ratio lock', 'Batch resizing', 'Custom dimensions'],
       badge: 'Precision',
       component: null,
-      category: 'Transform'
+      category: 'Transform',
+      isActive: false
     },
     {
       id: 'color-adjuster',
@@ -290,7 +314,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['HSL adjustments', 'Color curves', 'White balance', 'Selective color editing'],
       badge: 'Pro Color',
       component: null,
-      category: 'Color'
+      category: 'Color',
+      isActive: false
     },
     {
       id: 'filter-studio',
@@ -301,7 +326,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['50+ professional filters', 'Custom presets', 'Real-time preview', 'Blend modes'],
       badge: 'Creative',
       component: null,
-      category: 'Effects'
+      category: 'Effects',
+      isActive: false
     },
     {
       id: 'watermark-tool',
@@ -312,7 +338,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Text & image watermarks', 'Position controls', 'Transparency settings', 'Batch watermarking'],
       badge: 'Protection',
       component: null,
-      category: 'Branding'
+      category: 'Branding',
+      isActive: false
     },
     {
       id: 'noise-reducer',
@@ -323,7 +350,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['AI noise detection', 'Luminance & color noise', 'Detail preservation', 'Batch processing'],
       badge: 'AI Clean',
       component: null,
-      category: 'Enhancement'
+      category: 'Enhancement',
+      isActive: false
     },
     {
       id: 'sharpening-tool',
@@ -334,7 +362,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Edge-aware sharpening', 'Unsharp mask', 'Smart radius detection', 'Preview comparison'],
       badge: 'Sharp',
       component: null,
-      category: 'Enhancement'
+      category: 'Enhancement',
+      isActive: false
     },
     {
       id: 'exposure-corrector',
@@ -345,7 +374,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Auto exposure correction', 'Highlight recovery', 'Shadow lifting', 'HDR tone mapping'],
       badge: 'Auto Fix',
       component: null,
-      category: 'Correction'
+      category: 'Correction',
+      isActive: false
     },
     {
       id: 'perspective-corrector',
@@ -356,7 +386,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Keystone correction', 'Perspective guides', 'Auto detection', 'Manual adjustment'],
       badge: 'Geometry',
       component: null,
-      category: 'Correction'
+      category: 'Correction',
+      isActive: false
     },
     {
       id: 'vintage-effects',
@@ -367,7 +398,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Film emulation', 'Vintage color grading', 'Grain effects', 'Light leaks'],
       badge: 'Retro',
       component: null,
-      category: 'Effects'
+      category: 'Effects',
+      isActive: false
     },
     {
       id: 'collage-maker',
@@ -378,7 +410,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Multiple layouts', 'Custom spacing', 'Background options', 'Auto arrangement'],
       badge: 'Creative',
       component: null,
-      category: 'Composition'
+      category: 'Composition',
+      isActive: false
     },
     {
       id: 'border-tool',
@@ -389,7 +422,8 @@ const AdvancedToolsHub: React.FC = () => {
       features: ['Custom borders', 'Frame styles', 'Shadow effects', 'Rounded corners'],
       badge: 'Styling',
       component: null,
-      category: 'Styling'
+      category: 'Styling',
+      isActive: false
     }
   ];
 
@@ -516,8 +550,10 @@ const AdvancedToolsHub: React.FC = () => {
           {filteredTools.map((tool) => (
             <div
               key={tool.id}
-              className="group relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/20 overflow-hidden transform hover:-translate-y-2 cursor-pointer"
-              onClick={() => tool.component ? setActiveTool(tool.id) : null}
+              className={`group relative bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-white/20 overflow-hidden transform hover:-translate-y-2 ${
+                tool.isActive ? 'cursor-pointer' : 'cursor-not-allowed opacity-75'
+              }`}
+              onClick={() => tool.component && tool.isActive ? setActiveTool(tool.id) : null}
             >
               {/* Animated Background Gradient */}
               <div className={`absolute inset-0 bg-gradient-to-br ${tool.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
@@ -529,8 +565,8 @@ const AdvancedToolsHub: React.FC = () => {
                 </span>
               </div>
 
-              {/* Coming Soon Overlay for tools without components */}
-              {!tool.component && (
+              {/* Coming Soon Overlay for inactive tools */}
+              {!tool.isActive && (
                 <div className="absolute top-4 left-4 z-10">
                   <span className="px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold rounded-full shadow-lg">
                     Coming Soon
@@ -570,19 +606,19 @@ const AdvancedToolsHub: React.FC = () => {
                 {/* Action Button */}
                 <button
                   className={`w-full bg-gradient-to-r ${tool.gradient} text-white px-6 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 group-hover:scale-105 relative overflow-hidden ${
-                    !tool.component ? 'opacity-75 cursor-not-allowed' : ''
+                    !tool.isActive ? 'opacity-75 cursor-not-allowed' : ''
                   }`}
-                  disabled={!tool.component}
+                  disabled={!tool.isActive}
                 >
                   <span className="relative z-10">
-                    {tool.component ? `Try ${tool.name}` : 'Coming Soon'}
+                    {tool.isActive ? `Try ${tool.name}` : 'Coming Soon'}
                   </span>
-                  {tool.component && (
+                  {tool.isActive && (
                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform relative z-10" />
                   )}
                   
                   {/* Button shine effect */}
-                  {tool.component && (
+                  {tool.isActive && (
                     <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
                   )}
                 </button>
