@@ -7,7 +7,13 @@ import {
   Crop, Filter, Contrast, Sun, Moon, Droplets,
   Paintbrush, Eraser, Move, Copy, Shuffle, Sliders,
   Image as ImageIcon, FileImage, Camera, Video,
-  Layers3, Blend, Focus, Aperture, Lightbulb
+  Layers3, Blend, Focus, Aperture, Lightbulb,
+  FileText, FilePlus, FileX, Merge, Split, Lock,
+  Unlock, Compress, Archive, ScanLine, Type,
+  Combine, Divide, Shield, Key, Search, Replace,
+  RotateCcw, FlipHorizontal, FlipVertical, Crop as CropIcon,
+  Transparency, Contrast2, Brightness, Saturation,
+  Gamma, Histogram, ColorPicker, Eyedropper
 } from 'lucide-react';
 import AIEnhancer from './AIEnhancer';
 import SmartCrop from './SmartCrop';
@@ -17,6 +23,7 @@ const AdvancedToolsHub: React.FC = () => {
   const [activeTool, setActiveTool] = useState<string | null>(null);
 
   const tools = [
+    // AI Tools
     {
       id: 'ai-enhancer',
       name: 'AI Image Enhancer',
@@ -50,6 +57,201 @@ const AdvancedToolsHub: React.FC = () => {
       component: BackgroundRemover,
       category: 'AI Tools'
     },
+
+    // PDF Tools
+    {
+      id: 'pdf-to-jpg',
+      name: 'PDF to JPG Converter',
+      description: 'Convert PDF pages to high-quality JPG images with custom DPI and quality settings',
+      icon: <FileImage className="h-8 w-8" />,
+      gradient: 'from-red-500 via-orange-500 to-yellow-500',
+      features: ['High-resolution output', 'Custom DPI settings', 'Batch page conversion', 'Quality optimization'],
+      badge: 'PDF Pro',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-to-png',
+      name: 'PDF to PNG Converter',
+      description: 'Extract PDF pages as PNG images with transparency support and lossless quality',
+      icon: <FileText className="h-8 w-8" />,
+      gradient: 'from-blue-500 via-indigo-500 to-purple-500',
+      features: ['Transparency preservation', 'Lossless conversion', 'Vector graphics support', 'Text clarity'],
+      badge: 'Lossless',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'jpg-to-pdf',
+      name: 'JPG to PDF Creator',
+      description: 'Combine multiple JPG images into a single PDF with custom page layouts and compression',
+      icon: <FilePlus className="h-8 w-8" />,
+      gradient: 'from-green-500 via-emerald-500 to-teal-500',
+      features: ['Multi-image PDF creation', 'Custom page layouts', 'Compression options', 'Metadata support'],
+      badge: 'Creator',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'png-to-pdf',
+      name: 'PNG to PDF Creator',
+      description: 'Convert PNG images to PDF while preserving transparency and image quality',
+      icon: <Combine className="h-8 w-8" />,
+      gradient: 'from-cyan-500 via-blue-500 to-indigo-500',
+      features: ['Transparency handling', 'Quality preservation', 'Batch conversion', 'Custom sizing'],
+      badge: 'Quality',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-merger',
+      name: 'PDF Merger',
+      description: 'Merge multiple PDF files into one document with custom page ordering',
+      icon: <Merge className="h-8 w-8" />,
+      gradient: 'from-violet-500 via-purple-500 to-pink-500',
+      features: ['Drag & drop ordering', 'Page range selection', 'Bookmark preservation', 'Metadata merging'],
+      badge: 'Combine',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-splitter',
+      name: 'PDF Splitter',
+      description: 'Split PDF documents into individual pages or custom page ranges',
+      icon: <Split className="h-8 w-8" />,
+      gradient: 'from-orange-500 via-red-500 to-pink-500',
+      features: ['Page range splitting', 'Individual page extraction', 'Batch processing', 'Custom naming'],
+      badge: 'Divide',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-compressor',
+      name: 'PDF Compressor',
+      description: 'Reduce PDF file size while maintaining quality using advanced compression algorithms',
+      icon: <Compress className="h-8 w-8" />,
+      gradient: 'from-slate-500 via-gray-500 to-zinc-500',
+      features: ['Smart compression', 'Quality presets', 'Size optimization', 'Batch compression'],
+      badge: 'Optimize',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-protector',
+      name: 'PDF Password Protector',
+      description: 'Add password protection and security features to your PDF documents',
+      icon: <Lock className="h-8 w-8" />,
+      gradient: 'from-red-600 via-rose-600 to-pink-600',
+      features: ['Password encryption', 'Permission controls', 'Digital signatures', 'Security levels'],
+      badge: 'Secure',
+      component: null,
+      category: 'PDF Tools'
+    },
+    {
+      id: 'pdf-unlocker',
+      name: 'PDF Password Remover',
+      description: 'Remove password protection from PDF files you own with proper authorization',
+      icon: <Unlock className="h-8 w-8" />,
+      gradient: 'from-green-600 via-emerald-600 to-teal-600',
+      features: ['Password removal', 'Permission unlocking', 'Batch processing', 'Security validation'],
+      badge: 'Unlock',
+      component: null,
+      category: 'PDF Tools'
+    },
+
+    // JPG Specific Tools
+    {
+      id: 'jpg-optimizer',
+      name: 'JPG Optimizer',
+      description: 'Advanced JPG compression with quality analysis and progressive encoding options',
+      icon: <Zap className="h-8 w-8" />,
+      gradient: 'from-yellow-500 via-orange-500 to-red-500',
+      features: ['Progressive JPEG', 'Quality analysis', 'Huffman optimization', 'Chroma subsampling'],
+      badge: 'Optimize',
+      component: null,
+      category: 'JPG Tools'
+    },
+    {
+      id: 'jpg-metadata-editor',
+      name: 'JPG EXIF Editor',
+      description: 'Edit, remove, or add EXIF metadata to JPG images for privacy and organization',
+      icon: <Type className="h-8 w-8" />,
+      gradient: 'from-indigo-500 via-blue-500 to-cyan-500',
+      features: ['EXIF data editing', 'GPS removal', 'Copyright info', 'Batch metadata'],
+      badge: 'Privacy',
+      component: null,
+      category: 'JPG Tools'
+    },
+    {
+      id: 'jpg-quality-analyzer',
+      name: 'JPG Quality Analyzer',
+      description: 'Analyze JPG compression artifacts and quality metrics with detailed reports',
+      icon: <BarChart3 className="h-8 w-8" />,
+      gradient: 'from-purple-500 via-violet-500 to-indigo-500',
+      features: ['Quality scoring', 'Artifact detection', 'Compression analysis', 'Optimization tips'],
+      badge: 'Analysis',
+      component: null,
+      category: 'JPG Tools'
+    },
+    {
+      id: 'jpg-progressive-converter',
+      name: 'Progressive JPG Creator',
+      description: 'Convert standard JPG to progressive format for faster web loading',
+      icon: <ScanLine className="h-8 w-8" />,
+      gradient: 'from-teal-500 via-cyan-500 to-blue-500',
+      features: ['Progressive encoding', 'Web optimization', 'Loading preview', 'Batch conversion'],
+      badge: 'Web Ready',
+      component: null,
+      category: 'JPG Tools'
+    },
+
+    // PNG Specific Tools
+    {
+      id: 'png-optimizer',
+      name: 'PNG Optimizer',
+      description: 'Lossless PNG compression with palette optimization and transparency handling',
+      icon: <Transparency className="h-8 w-8" />,
+      gradient: 'from-emerald-500 via-green-500 to-teal-500',
+      features: ['Lossless compression', 'Palette optimization', 'Transparency preservation', 'Chunk optimization'],
+      badge: 'Lossless',
+      component: null,
+      category: 'PNG Tools'
+    },
+    {
+      id: 'png-transparency-editor',
+      name: 'PNG Transparency Editor',
+      description: 'Edit transparency channels, create alpha masks, and manage transparent regions',
+      icon: <Eyedropper className="h-8 w-8" />,
+      gradient: 'from-pink-500 via-rose-500 to-red-500',
+      features: ['Alpha channel editing', 'Color to transparency', 'Transparency masks', 'Edge smoothing'],
+      badge: 'Alpha Pro',
+      component: null,
+      category: 'PNG Tools'
+    },
+    {
+      id: 'png-to-jpg-converter',
+      name: 'PNG to JPG Converter',
+      description: 'Convert PNG to JPG with background color options and quality control',
+      icon: <Replace className="h-8 w-8" />,
+      gradient: 'from-orange-500 via-amber-500 to-yellow-500',
+      features: ['Background color selection', 'Quality control', 'Transparency handling', 'Batch conversion'],
+      badge: 'Convert',
+      component: null,
+      category: 'PNG Tools'
+    },
+    {
+      id: 'png-sprite-generator',
+      name: 'PNG Sprite Generator',
+      description: 'Combine multiple PNG images into sprite sheets for web development',
+      icon: <Grid3X3 className="h-8 w-8" />,
+      gradient: 'from-violet-500 via-purple-500 to-indigo-500',
+      features: ['Sprite sheet creation', 'CSS generation', 'Optimization', 'Custom layouts'],
+      badge: 'Web Dev',
+      component: null,
+      category: 'PNG Tools'
+    },
+
+    // Enhanced Image Tools
     {
       id: 'batch-processor',
       name: 'Batch Processor',
@@ -74,11 +276,11 @@ const AdvancedToolsHub: React.FC = () => {
     },
     {
       id: 'format-converter',
-      name: 'Format Converter',
-      description: 'Convert between 15+ image formats with advanced compression and quality controls',
+      name: 'Universal Format Converter',
+      description: 'Convert between 20+ image formats with advanced compression and quality controls',
       icon: <FileImage className="h-8 w-8" />,
       gradient: 'from-green-500 via-emerald-500 to-teal-500',
-      features: ['15+ format support', 'Smart compression', 'Quality presets', 'Lossless options'],
+      features: ['20+ format support', 'Smart compression', 'Quality presets', 'Lossless options'],
       badge: 'Universal',
       component: null,
       category: 'Conversion'
@@ -203,29 +405,23 @@ const AdvancedToolsHub: React.FC = () => {
       badge: 'Styling',
       component: null,
       category: 'Styling'
-    },
-    {
-      id: 'metadata-editor',
-      name: 'Metadata Editor',
-      description: 'View, edit, and remove EXIF data and other metadata from your images',
-      icon: <FileImage className="h-8 w-8" />,
-      gradient: 'from-gray-500 via-slate-500 to-zinc-500',
-      features: ['EXIF data editing', 'GPS removal', 'Copyright info', 'Batch metadata'],
-      badge: 'Privacy',
-      component: null,
-      category: 'Utility'
     }
   ];
 
   const categories = [
     { id: 'all', name: 'All Tools', icon: <Layers3 className="h-4 w-4" /> },
     { id: 'AI Tools', name: 'AI Tools', icon: <Brain className="h-4 w-4" /> },
+    { id: 'PDF Tools', name: 'PDF Tools', icon: <FileText className="h-4 w-4" /> },
+    { id: 'JPG Tools', name: 'JPG Tools', icon: <ImageIcon className="h-4 w-4" /> },
+    { id: 'PNG Tools', name: 'PNG Tools', icon: <Transparency className="h-4 w-4" /> },
     { id: 'Enhancement', name: 'Enhancement', icon: <Wand2 className="h-4 w-4" /> },
     { id: 'Transform', name: 'Transform', icon: <RotateCw className="h-4 w-4" /> },
     { id: 'Color', name: 'Color', icon: <Palette className="h-4 w-4" /> },
     { id: 'Effects', name: 'Effects', icon: <Filter className="h-4 w-4" /> },
     { id: 'Correction', name: 'Correction', icon: <Sliders className="h-4 w-4" /> },
-    { id: 'Utility', name: 'Utility', icon: <Settings className="h-4 w-4" /> }
+    { id: 'Conversion', name: 'Conversion', icon: <FileImage className="h-4 w-4" /> },
+    { id: 'Analysis', name: 'Analysis', icon: <BarChart3 className="h-4 w-4" /> },
+    { id: 'Productivity', name: 'Productivity', icon: <Layers className="h-4 w-4" /> }
   ];
 
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -237,7 +433,7 @@ const AdvancedToolsHub: React.FC = () => {
   const stats = [
     { icon: <TrendingUp className="h-5 w-5" />, value: "98%", label: "Accuracy Rate" },
     { icon: <Zap className="h-5 w-5" />, value: "< 2s", label: "Processing Time" },
-    { icon: <Award className="h-5 w-5" />, value: "18", label: "AI Tools" },
+    { icon: <Award className="h-5 w-5" />, value: "35+", label: "Professional Tools" },
     { icon: <Star className="h-5 w-5" />, value: "4.9/5", label: "User Rating" }
   ];
 
@@ -280,16 +476,16 @@ const AdvancedToolsHub: React.FC = () => {
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-violet-600 to-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Sparkles className="h-4 w-4" />
-            <span>Advanced AI Tools</span>
+            <span>Professional Tool Suite</span>
           </div>
           
           <h2 className="text-3xl sm:text-5xl font-bold bg-gradient-to-r from-gray-900 via-violet-900 to-blue-900 bg-clip-text text-transparent mb-6">
-            Professional AI Suite
+            Complete Image & PDF Suite
           </h2>
           
           <p className="text-lg sm:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-            Unlock the full potential of your images with our comprehensive collection of AI-powered tools. 
-            From intelligent enhancement to creative effects, everything you need for professional results.
+            Comprehensive collection of AI-powered tools for PDF processing, JPG optimization, PNG editing, 
+            and advanced image enhancement. Everything you need for professional results.
           </p>
         </div>
 
@@ -414,46 +610,46 @@ const AdvancedToolsHub: React.FC = () => {
           ))}
         </div>
 
-        {/* Feature Highlight */}
+        {/* Feature Categories Highlight */}
         <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20 mb-16">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Our Advanced Tools?</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Complete Professional Suite</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Our comprehensive suite of AI-powered tools provides everything you need for professional image processing
+              From PDF processing to advanced image editing, our comprehensive toolkit covers all your needs
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">PDF Tools</h4>
+              <p className="text-sm text-gray-600">Convert, merge, split, compress, and secure PDF documents</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <ImageIcon className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">JPG Optimization</h4>
+              <p className="text-sm text-gray-600">Advanced compression, quality analysis, and metadata editing</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Transparency className="h-8 w-8 text-white" />
+              </div>
+              <h4 className="font-bold text-gray-900 mb-2">PNG Processing</h4>
+              <p className="text-sm text-gray-600">Transparency editing, lossless optimization, and sprite generation</p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Brain className="h-8 w-8 text-white" />
               </div>
-              <h4 className="font-bold text-gray-900 mb-2">AI-Powered</h4>
-              <p className="text-sm text-gray-600">Advanced machine learning algorithms for intelligent processing</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Zap className="h-8 w-8 text-white" />
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Lightning Fast</h4>
-              <p className="text-sm text-gray-600">GPU acceleration and optimized algorithms for rapid processing</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Eye className="h-8 w-8 text-white" />
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Real-time Preview</h4>
-              <p className="text-sm text-gray-600">See changes instantly with live preview and comparison tools</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Layers className="h-8 w-8 text-white" />
-              </div>
-              <h4 className="font-bold text-gray-900 mb-2">Batch Processing</h4>
-              <p className="text-sm text-gray-600">Process multiple images simultaneously for maximum efficiency</p>
+              <h4 className="font-bold text-gray-900 mb-2">AI Enhancement</h4>
+              <p className="text-sm text-gray-600">Intelligent upscaling, noise reduction, and smart cropping</p>
             </div>
           </div>
         </div>
@@ -464,11 +660,11 @@ const AdvancedToolsHub: React.FC = () => {
             <div className="absolute inset-0 bg-black/10 rounded-3xl"></div>
             <div className="relative z-10">
               <h3 className="text-2xl sm:text-3xl font-bold mb-4">
-                Ready to Experience Professional AI Processing?
+                Ready for Professional Image & PDF Processing?
               </h3>
               <p className="text-violet-100 mb-8 text-lg max-w-2xl mx-auto">
-                Join thousands of professionals who trust JPG2GO for their image processing needs. 
-                Start with our basic converter or dive into advanced AI tools.
+                Join thousands of professionals who trust JPG2GO for their complete image and document processing needs. 
+                Start with our basic converter or explore our advanced professional tools.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
